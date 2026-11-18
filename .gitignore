@@ -1,0 +1,12 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*_cache/
+*_files/
+
+# Raw CDC downloads (re-fetched by the script)
+data_raw/
+
+# OS
+.DS_Store

@@ -1,0 +1,15 @@
+"step","variable","decision","reason","n_affected"
+"recode","DIQ010","refused (7) / don't know (9) set to missing","not an answer; cannot count as diagnosed or not",13
+"recode","DIQ090","refused (7) / don't know (9) set to missing","not an answer",12
+"recode","LEALPN / LEARPN","-1 (not enough information) set to missing","a count of insensate sites cannot be negative; the code means 'not classifiable'",557
+"flag","flag_exam","interview-only participants flagged, not in cohort","never examined, so no foot data; exam weight is zero",118
+"note","RIDAGEYR","age kept as recorded","NHANES top-codes age at 85 in these cycles; true ages above 85 are not known",70
+"derive","lops","two or more of three sites insensate on the same foot = loss of sensation","sensitive threshold for a screen",193
+"derive","lops","untested because of lesion, bandage, stocking, cast, amputation or callus = at risk","a foot problem severe enough to stop the test is itself a risk",36
+"derive","lops","untested for technical or other reason = normal","no clinical reason to suspect risk",50
+"derive","pad","no ankle pulse, or ankle pressure above 255 mm Hg = abnormal","recorded findings of disease that stop the index being calculated; not missing data",81
+"derive","pad","ABI below 0.9 or 1.3 and above on either leg = abnormal","low = poor circulation; high = stiff, calcified arteries common in diabetes",331
+"derive","ulcer_hx","past leg or foot sore taking over 4 weeks to heal = past ulcer","question covers leg as well as foot; accepted over-count for a sensitive screen",148
+"derive","lesion_now","lesion seen on either foot at the exam = positive","current skin breakdown; matches podiatry inspection; survey does not say if it is an ulcer",19
+"derive","at_risk","any one of four components positive = at risk; all four negative = not at risk; otherwise unknown","sensitive combined screen for podiatry referral",356
+"derive","refer","cleared only if all four checks done and normal; positive or incomplete = refer","a check that could not be completed cannot clear anyone; podiatry makes the real judgement",931
