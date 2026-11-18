@@ -1,5 +1,5 @@
 ---
-title: "Risk-based triage of diabetics for podiatric assessment: curation of NHANES 1999–2004"
+title: "Risk-based triage of people with diabetes for podiatric assessment: curation of NHANES 1999–2004"
 author: "Parag Garg"
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 output:
@@ -97,7 +97,7 @@ include_graphics(c("figures/coversheet_p1.png", "figures/coversheet_p2.png", "fi
 
 **Results:** `r fmt(n_total)` participants were included, representing approximately `r pop_m` million US adults aged 40 years and over with diabetes. Of these, `r n_cleared` (weighted `r pc(cleared["est"])`) fulfilled clearance criteria. Another `r n_pos` had positive findings and `r n_inc` had incomplete assessments. Excluding incomplete assessments increased the estimated clearance proportion to `r s_drop`, while assuming missing assessments were normal increased it to `r s_norm`.
 
-**Conclusion:** We have curated the data to show almost half the diabetics could avoid attending podiatric foot assessment. Missing clinical assessments were the principal determinant of uncertainty.
+**Conclusion:** We have curated the data to show almost half of people with diabetes could avoid attending podiatric foot assessment. Missing clinical assessments were the principal determinant of uncertainty.
 
 # 1. Introduction
 
