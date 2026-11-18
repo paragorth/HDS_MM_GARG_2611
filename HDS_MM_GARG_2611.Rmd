@@ -281,7 +281,7 @@ Prospective validation using contemporary NHS data and longitudinal ulcer outcom
 
 # Use of generative artificial intelligence
 
-Generative artificial intelligence was used to support drafting and checking R code, organising the report, and improving spelling, grammar and written clarity.
+Claude Opus 5.5 was used for code generation, grammar and spelling checks, and table creation and arrangement. I changed the code for my joins and patterns. I reviewed and accepted or edited every suggested change to the text, and checked that all numbers in tables match with the code.
 
 # References
 
