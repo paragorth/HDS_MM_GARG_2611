@@ -83,7 +83,7 @@ s_drop <- pc(scen$`Weighted % cleared`[2]); s_norm <- pc(scen$`Weighted % cleare
 
 **Objective:** To develop an analysis-ready dataset and estimate the proportion of adults with diabetes aged 40 years and over who could avoid specialist podiatry referral using predefined clinical risk criteria.
 
-**Methods:** Publicly available National Health and Nutrition Examination Survey (NHANES) data from 1999–2004 (Centers for Disease Control and Prevention) were linked, cleaned and curated. Diabetes was defined by reported medical diagnosis or HbA1c ≥6.5%. Four assessment domains were used: protective sensation, ankle–brachial pressure index (ABPI), previous ulceration and current foot lesions. Individuals were cleared only when all four assessments were available and negative. Positive or incomplete assessments resulted in referral classification.
+**Methods:** Publicly available National Health and Nutrition Examination Survey (NHANES) data from 1999–2004 were linked, cleaned and curated. Diabetes was defined by reported medical diagnosis or HbA1c ≥6.5%. Four assessment domains were used: protective sensation, ankle–brachial pressure index (ABPI), previous ulceration and current foot lesions. Individuals were cleared only when all four assessments were available and negative. Positive or incomplete assessments resulted in referral classification.
 
 **Results:** `r fmt(n_total)` participants were included, representing approximately `r pop_m` million US adults aged 40 years and over with diabetes. Of these, `r n_cleared` (weighted `r pc(cleared["est"])`) fulfilled clearance criteria. Another `r n_pos` had positive findings and `r n_inc` had incomplete assessments. Excluding incomplete assessments increased the estimated clearance proportion to `r s_drop`, while assuming missing assessments were normal increased it to `r s_norm`.
 
@@ -103,7 +103,7 @@ Pallin et al. (2024), in a review examining established screening principles, fo
 
 PubMed and Google Scholar were searched using “diabetic foot screening”, “neuropathy”, “podiatry referral” and “NHANES”. Relevant NICE, IWGDF and CDC guidance was also reviewed. Previous research using NHANES foot examination data established the prevalence of lower-extremity disease in US adults with diabetes. Gregg et al. (2004) reported neuropathy in 28.5%, peripheral arterial disease in 9.5% and either condition in approximately 30.2% of adults with diabetes. These estimates describe disease burden rather than the proportion of patients requiring specialist assessment under a combined referral rule.
 
-This work addresses this practical distinction. Instead of simply counting abnormalities, it curates the underlying data into a clinically interpretable classification of patients who would or would not trigger a specialist referral.
+This work addresses that gap: rather than counting abnormalities, it curates the data into a classification of who would or would not trigger specialist referral.
 
 **Research question:** Among adults aged 40 years and over with diabetes, what proportion have sufficient assessment findings to avoid specialist podiatry referral?
 
@@ -136,7 +136,7 @@ NHANES public-use datasets contain de-identified participant information. No sep
 
 Data governance was considered through the Five Safes framework: safe projects, people, data, settings and outputs. The project had a defined research purpose, used openly available anonymised data and produced aggregate results without disclosing individual records.
 
-The FAIR principles informed the data-processing approach. Data sources, variable transformations, classification rules and analytic outputs were documented to support findability, accessibility, interoperability and reproducibility.
+The FAIR principles informed the data-processing approach. Data sources, variable transformations, classification rules and analytic outputs were documented to support findability, accessibility, interoperability and reusability.
 
 Potential data hazards included missing clinical findings, inappropriate interpretation of examination codes, population selection bias and the risk of presenting a research classification as validated clinical advice (Data Hazards labels: Ranks or Classifies People; May Cause Direct Harm; Reinforces Existing Biases; Danger of Misuse). These were managed through explicit phenotype definitions, conservative handling of incomplete screens and sensitivity analyses.
 
@@ -158,7 +158,7 @@ Refused responses, unknown answers and invalid values were treated as missing ra
 
 The set has separate analysis flags for normal results, positive findings, technical limitations and entirely missing examinations.
 
-All data processing and analysis were conducted in R, with the final report generated using R Markdown. The pipeline produces three reusable datasets: a linked source dataset, a curated examination dataset and an analysis-ready diabetic cohort. The release is accompanied by a data dictionary and cleaning log documenting variable definitions, transformations, exclusions and missing-data decisions. This allows subsequent researchers to reuse the appropriate layer without repeating the entire pipeline. The script downloads the original CDC files if they are not present and rebuilds every layer from scratch. Every number in the report is calculated when the document is generated, not typed in.
+All processing was done in R and R Markdown. The pipeline rebuilds all three layers from the original CDC files, with a data dictionary and cleaning log recording every definition, transformation, exclusion and missing-data decision (Appendix A1–A6), so researchers can reuse whichever layer suits them. Every number in the report is calculated at knitting, not typed in.
 
 ## 2.4 Clinical phenotype definitions and referral algorithm
 
@@ -191,7 +191,7 @@ An untested foot was handled according to the reason recorded. A dressing, lesio
 
 **Previous ulceration:** Any reported previous ulcer of the leg or foot was treated as a positive risk indicator. The NHANES question did not distinguish diabetic foot ulceration from ulcers of other causes, but in the same vein it was included for referral.
 
-This classification approximates the distinction between lower- and higher-risk patients in NICE guidance, but is not identical to formal NICE risk categorisation because NHANES does not capture every required clinical feature. Referral classification therefore represents a precautionary research rule, the best that can be obtained with this dataset.
+This approximates, but is not identical to, NICE risk categorisation, because NHANES does not capture every required clinical feature; it is a precautionary research rule.
 
 ## 2.5 Statistical analysis and sensitivity testing
 
@@ -229,7 +229,7 @@ The sensitivity analyses showed that missing-data assumptions had the greatest i
 kable(scen, caption = "Table 2. The main result under each alternative decision")
 ```
 
-Data integrity was assessed at each processing stage. Participant identifiers were checked for uniqueness, ensuring one row per person and one-to-one joins without duplication. The linked file contained `r fmt(n_l1)` rows, matching the demographic file, so no participant was lost or added. Survey weights were checked for positive values, and the data dictionary was cross-checked against the final dataset to confirm that all variables were documented. A reverse-join check found no examination, laboratory or questionnaire records without a corresponding demographic record (Appendix A5).
+Integrity checks passed at every stage (Appendix A5): participant identifiers were unique, every join was one-to-one, the linked file had `r fmt(n_l1)` rows matching the demographic file, every examination, laboratory and questionnaire record had a matching demographic record, all survey weights were positive, and every variable was documented in the dictionary.
 
 # 4. Discussion
 
@@ -239,9 +239,7 @@ The central finding is that approximately `r pc(cleared["est"])` of adults with 
 
 The main contribution is not a new diagnostic test. It is the transformation of a national survey into a clinically structured, analysis-ready dataset capable of distinguishing abnormal findings, reassuring findings and incomplete information. The curated dataset can also examine foot risk factors in people without diabetes using Layer 2, while the alternative-decision columns allow researchers to test different screening thresholds and referral rules.
 
-This can relieve pressure on podiatrists and health services and ultimately benefit patients at actual risk by getting them appointments earlier.
-
-The findings suggest an opportunity for differentiated diabetic foot pathways, in which clearly low-risk patients remain within routine assessment services while podiatry capacity is directed towards those with positive or uncertain findings.
+This suggests an opportunity for differentiated pathways: clearly low-risk patients remain in routine assessment, while podiatry capacity is directed to those with positive or uncertain findings, who could then be seen sooner.
 
 ## 4.2 Alternative approaches
 
@@ -274,8 +272,6 @@ Any future implementation would require contemporary prospective validation, eva
 # 5. Conclusion
 
 This project demonstrates how careful data curation can convert historical population survey data into a clinically interpretable diabetic foot referral classification.
-
-This suggests that a substantial proportion may not need immediate specialist podiatry referral following an initial structured assessment.
 
 The most important methodological finding is the influence of missing data. Assuming incomplete assessments were normal increased clearance to `r s_norm`, highlighting the risk of overstating service savings through inappropriate data handling.
 

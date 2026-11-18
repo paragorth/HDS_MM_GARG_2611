@@ -3896,14 +3896,13 @@ estimate the proportion of adults with diabetes aged 40 years and over
 who could avoid specialist podiatry referral using predefined clinical
 risk criteria.</p>
 <p><strong>Methods:</strong> Publicly available National Health and
-Nutrition Examination Survey (NHANES) data from 1999–2004 (Centers for
-Disease Control and Prevention) were linked, cleaned and curated.
-Diabetes was defined by reported medical diagnosis or HbA1c ≥6.5%. Four
-assessment domains were used: protective sensation, ankle–brachial
-pressure index (ABPI), previous ulceration and current foot lesions.
-Individuals were cleared only when all four assessments were available
-and negative. Positive or incomplete assessments resulted in referral
-classification.</p>
+Nutrition Examination Survey (NHANES) data from 1999–2004 were linked,
+cleaned and curated. Diabetes was defined by reported medical diagnosis
+or HbA1c ≥6.5%. Four assessment domains were used: protective sensation,
+ankle–brachial pressure index (ABPI), previous ulceration and current
+foot lesions. Individuals were cleared only when all four assessments
+were available and negative. Positive or incomplete assessments resulted
+in referral classification.</p>
 <p><strong>Results:</strong> 1,627 participants were included,
 representing approximately 15.8 million US adults aged 40 years and over
 with diabetes. Of these, 696 (weighted 48%) fulfilled clearance
@@ -3963,10 +3962,9 @@ reported neuropathy in 28.5%, peripheral arterial disease in 9.5% and
 either condition in approximately 30.2% of adults with diabetes. These
 estimates describe disease burden rather than the proportion of patients
 requiring specialist assessment under a combined referral rule.</p>
-<p>This work addresses this practical distinction. Instead of simply
-counting abnormalities, it curates the underlying data into a clinically
-interpretable classification of patients who would or would not trigger
-a specialist referral.</p>
+<p>This work addresses that gap: rather than counting abnormalities, it
+curates the data into a classification of who would or would not trigger
+specialist referral.</p>
 <p><strong>Research question:</strong> Among adults aged 40 years and
 over with diabetes, what proportion have sufficient assessment findings
 to avoid specialist podiatry referral?</p>
@@ -4018,7 +4016,7 @@ aggregate results without disclosing individual records.</p>
 <p>The FAIR principles informed the data-processing approach. Data
 sources, variable transformations, classification rules and analytic
 outputs were documented to support findability, accessibility,
-interoperability and reproducibility.</p>
+interoperability and reusability.</p>
 <p>Potential data hazards included missing clinical findings,
 inappropriate interpretation of examination codes, population selection
 bias and the risk of presenting a research classification as validated
@@ -4055,17 +4053,12 @@ analysis-ready cohort.</p>
 missing rather than interpreted as negative findings.</p>
 <p>The set has separate analysis flags for normal results, positive
 findings, technical limitations and entirely missing examinations.</p>
-<p>All data processing and analysis were conducted in R, with the final
-report generated using R Markdown. The pipeline produces three reusable
-datasets: a linked source dataset, a curated examination dataset and an
-analysis-ready diabetic cohort. The release is accompanied by a data
-dictionary and cleaning log documenting variable definitions,
-transformations, exclusions and missing-data decisions. This allows
-subsequent researchers to reuse the appropriate layer without repeating
-the entire pipeline. The script downloads the original CDC files if they
-are not present and rebuilds every layer from scratch. Every number in
-the report is calculated when the document is generated, not typed
-in.</p>
+<p>All processing was done in R and R Markdown. The pipeline rebuilds
+all three layers from the original CDC files, with a data dictionary and
+cleaning log recording every definition, transformation, exclusion and
+missing-data decision (Appendix A1–A6), so researchers can reuse
+whichever layer suits them. Every number in the report is calculated at
+knitting, not typed in.</p>
 </div>
 <div id="clinical-phenotype-definitions-and-referral-algorithm" class="section level2">
 <h2>2.4 Clinical phenotype definitions and referral algorithm</h2>
@@ -4154,12 +4147,9 @@ diabetes.</p>
 the leg or foot was treated as a positive risk indicator. The NHANES
 question did not distinguish diabetic foot ulceration from ulcers of
 other causes, but in the same vein it was included for referral.</p>
-<p>This classification approximates the distinction between lower- and
-higher-risk patients in NICE guidance, but is not identical to formal
-NICE risk categorisation because NHANES does not capture every required
-clinical feature. Referral classification therefore represents a
-precautionary research rule, the best that can be obtained with this
-dataset.</p>
+<p>This approximates, but is not identical to, NICE risk categorisation,
+because NHANES does not capture every required clinical feature; it is a
+precautionary research rule.</p>
 </div>
 <div id="statistical-analysis-and-sensitivity-testing" class="section level2">
 <h2>2.5 Statistical analysis and sensitivity testing</h2>
@@ -4255,15 +4245,12 @@ decision</caption>
 </tr>
 </tbody>
 </table>
-<p>Data integrity was assessed at each processing stage. Participant
-identifiers were checked for uniqueness, ensuring one row per person and
-one-to-one joins without duplication. The linked file contained 31,126
-rows, matching the demographic file, so no participant was lost or
-added. Survey weights were checked for positive values, and the data
-dictionary was cross-checked against the final dataset to confirm that
-all variables were documented. A reverse-join check found no
-examination, laboratory or questionnaire records without a corresponding
-demographic record (Appendix A5).</p>
+<p>Integrity checks passed at every stage (Appendix A5): participant
+identifiers were unique, every join was one-to-one, the linked file had
+31,126 rows matching the demographic file, every examination, laboratory
+and questionnaire record had a matching demographic record, all survey
+weights were positive, and every variable was documented in the
+dictionary.</p>
 </div>
 <div id="discussion" class="section level1">
 <h1>4. Discussion</h1>
@@ -4280,13 +4267,10 @@ reassuring findings and incomplete information. The curated dataset can
 also examine foot risk factors in people without diabetes using Layer 2,
 while the alternative-decision columns allow researchers to test
 different screening thresholds and referral rules.</p>
-<p>This can relieve pressure on podiatrists and health services and
-ultimately benefit patients at actual risk by getting them appointments
-earlier.</p>
-<p>The findings suggest an opportunity for differentiated diabetic foot
-pathways, in which clearly low-risk patients remain within routine
-assessment services while podiatry capacity is directed towards those
-with positive or uncertain findings.</p>
+<p>This suggests an opportunity for differentiated pathways: clearly
+low-risk patients remain in routine assessment, while podiatry capacity
+is directed to those with positive or uncertain findings, who could then
+be seen sooner.</p>
 </div>
 <div id="alternative-approaches" class="section level2">
 <h2>4.2 Alternative approaches</h2>
@@ -4337,9 +4321,6 @@ demographic subgroup performance and clear clinical accountability.</p>
 <p>This project demonstrates how careful data curation can convert
 historical population survey data into a clinically interpretable
 diabetic foot referral classification.</p>
-<p>This suggests that a substantial proportion may not need immediate
-specialist podiatry referral following an initial structured
-assessment.</p>
 <p>The most important methodological finding is the influence of missing
 data. Assuming incomplete assessments were normal increased clearance to
 69%, highlighting the risk of overstating service savings through
@@ -4508,8 +4489,8 @@ not be examined)</td>
 </div>
 <div id="a4.-cleaning-and-derivation-log" class="section level2">
 <h2>A4. Cleaning and derivation log</h2>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-05fbcdc1b700d5d10d38" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-05fbcdc1b700d5d10d38">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table A4. Cleaning and derivation log<\/caption>","data":[["recode","recode","recode","flag","note","derive","derive","derive","derive","derive","derive","derive","derive","derive"],["DIQ010","DIQ090","LEALPN / LEARPN","flag_exam","RIDAGEYR","lops","lops","lops","pad","pad","ulcer_hx","lesion_now","at_risk","refer"],["refused (7) / don't know (9) set to missing","refused (7) / don't know (9) set to missing","-1 (not enough information) set to missing","interview-only participants flagged, not in cohort","age kept as recorded","two or more of three sites insensate on the same foot = loss of sensation","untested because of lesion, bandage, stocking, cast, amputation or callus = at risk","untested for technical or other reason = normal","no ankle pulse, or ankle pressure above 255 mm Hg = abnormal","ABI below 0.9 or 1.3 and above on either leg = abnormal","past leg or foot sore taking over 4 weeks to heal = past ulcer","lesion seen on either foot at the exam = positive","any one of four components positive = at risk; all four negative = not at risk; otherwise unknown","cleared only if all four checks done and normal; positive or incomplete = refer"],["not an answer; cannot count as diagnosed or not","not an answer","a count of insensate sites cannot be negative; the code means 'not classifiable'","never examined, so no foot data; exam weight is zero","NHANES top-codes age at 85 in these cycles; true ages above 85 are not known","sensitive threshold for a screen","a foot problem severe enough to stop the test is itself a risk","no clinical reason to suspect risk","recorded findings of disease that stop the index being calculated; not missing data","low = poor circulation; high = stiff, calcified arteries common in diabetes","question covers leg as well as foot; accepted over-count for a sensitive screen","current skin breakdown; matches podiatry inspection; survey does not say if it is an ulcer","sensitive combined screen for podiatry referral","a check that could not be completed cannot clear anyone; podiatry makes the real judgement"],[13,12,557,118,70,193,36,50,81,331,148,19,356,931]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Step<\/th>\n      <th>Variable<\/th>\n      <th>Decision<\/th>\n      <th>Reason<\/th>\n      <th>People affected<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["csv","excel"],"pageLength":15,"columnDefs":[{"className":"dt-right","targets":4},{"name":"step","targets":0},{"name":"variable","targets":1},{"name":"decision","targets":2},{"name":"reason","targets":3},{"name":"n_affected","targets":4}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-f270279749e3e097724e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f270279749e3e097724e">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table A4. Cleaning and derivation log<\/caption>","data":[["recode","recode","recode","flag","note","derive","derive","derive","derive","derive","derive","derive","derive","derive"],["DIQ010","DIQ090","LEALPN / LEARPN","flag_exam","RIDAGEYR","lops","lops","lops","pad","pad","ulcer_hx","lesion_now","at_risk","refer"],["refused (7) / don't know (9) set to missing","refused (7) / don't know (9) set to missing","-1 (not enough information) set to missing","interview-only participants flagged, not in cohort","age kept as recorded","two or more of three sites insensate on the same foot = loss of sensation","untested because of lesion, bandage, stocking, cast, amputation or callus = at risk","untested for technical or other reason = normal","no ankle pulse, or ankle pressure above 255 mm Hg = abnormal","ABI below 0.9 or 1.3 and above on either leg = abnormal","past leg or foot sore taking over 4 weeks to heal = past ulcer","lesion seen on either foot at the exam = positive","any one of four components positive = at risk; all four negative = not at risk; otherwise unknown","cleared only if all four checks done and normal; positive or incomplete = refer"],["not an answer; cannot count as diagnosed or not","not an answer","a count of insensate sites cannot be negative; the code means 'not classifiable'","never examined, so no foot data; exam weight is zero","NHANES top-codes age at 85 in these cycles; true ages above 85 are not known","sensitive threshold for a screen","a foot problem severe enough to stop the test is itself a risk","no clinical reason to suspect risk","recorded findings of disease that stop the index being calculated; not missing data","low = poor circulation; high = stiff, calcified arteries common in diabetes","question covers leg as well as foot; accepted over-count for a sensitive screen","current skin breakdown; matches podiatry inspection; survey does not say if it is an ulcer","sensitive combined screen for podiatry referral","a check that could not be completed cannot clear anyone; podiatry makes the real judgement"],[13,12,557,118,70,193,36,50,81,331,148,19,356,931]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Step<\/th>\n      <th>Variable<\/th>\n      <th>Decision<\/th>\n      <th>Reason<\/th>\n      <th>People affected<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["csv","excel"],"pageLength":15,"columnDefs":[{"className":"dt-right","targets":4},{"name":"step","targets":0},{"name":"variable","targets":1},{"name":"decision","targets":2},{"name":"reason","targets":3},{"name":"n_affected","targets":4}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="a5.-integrity-checks" class="section level2">
 <h2>A5. Integrity checks</h2>
@@ -4560,8 +4541,8 @@ and vice versa</td>
 </div>
 <div id="a6.-data-dictionary-analysis-ready-layer" class="section level2">
 <h2>A6. Data dictionary (analysis-ready layer)</h2>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-f74cfbec6bc1b79596a0" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f74cfbec6bc1b79596a0">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table A6. Data dictionary (analysis-ready layer)<\/caption>","data":[["seqn","cycle","age","sex","ethnicity","hba1c","dm_source","abi_left / abi_right","lops","lops_source","pad","pad_source","abi_missing_reason","abi_low / abi_stiff","ulcer_hx","lesion_now","at_risk","refer","refer_reason","refer_main_reason","alt_lops_1site","alt_pad_low_only","psu / strata / weight"],["Participant identifier","Survey cycle start year","Age at interview, years (top-coded at 85)","Sex","Race/ethnicity (NHANES categories)","Glycated haemoglobin, %","How diabetes was identified","Ankle-brachial index per leg","Loss of protective sensation, either foot","How the sensation result was obtained","Abnormal ankle-brachial index (&lt;0.9 or &gt;=1.3) either leg","How the ankle result was obtained","Why the ankle result is unknown (blank if known)","Low (&lt;0.9) or stiff (&gt;=1.3) index on either leg","Ever had leg or foot sore taking &gt;4 weeks to heal","Lesion seen on either foot at exam","Any of the four checks positive","PRIMARY OUTCOME: refer to podiatry","Positive, incomplete or cleared","Most urgent reason for referral (deep phenotype)","Alternative decision: sensation loss from 1 numb site","Alternative decision: only low index (&lt;0.9) counts as abnormal","Survey design variables; weight combined for 1999-2004"],["integer, unique","1999, 2001, 2003","40-85","Male, Female","5 categories","numeric","told by a doctor; HbA1c 6.5% or higher only","numeric","1 yes, 0 no, NA unknown (2+ of 3 sites on one foot)","measured; assigned at risk; assigned normal; unknown","1 yes, 0 no, NA unknown","measured; abnormal: no pulse or pressure unmeasurable; unknown","6 categories","1 yes, 0 no, NA","1 yes, 0 no, NA","1 yes, 0 no, NA","1 yes, 0 all four normal, NA incomplete","1 refer, 0 cleared","3 categories","6 categories","1 yes, 0 no, NA","1 yes, 0 no, NA","numeric"],["DEMO: SEQN","derived","DEMO: RIDAGEYR","DEMO: RIAGENDR","DEMO: RIDRETH1","LAB10 / L10_B / L10_C: LBXGH","DIQ010, LBXGH","LEXABPI / LEXAB_B / LEXAB_C","LEXPN: LEALPN, LEARPN, reason codes","derived","derived","derived from LEXAB: LEALPTPD, LEARPTPD, LEALAPNC, LEARAPNC","derived from LEXAB: LEDSCCT2","derived","DIQ: DIQ090","LEXPN: LEALLES, LEARLES","derived","derived","derived","derived","derived","derived","DEMO; CDC combining rule"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>variable<\/th>\n      <th>description<\/th>\n      <th>values<\/th>\n      <th>source<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["csv","excel"],"pageLength":25,"columnDefs":[{"name":"variable","targets":0},{"name":"description","targets":1},{"name":"values","targets":2},{"name":"source","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-804cb4a4873ac22bcd77" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-804cb4a4873ac22bcd77">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table A6. Data dictionary (analysis-ready layer)<\/caption>","data":[["seqn","cycle","age","sex","ethnicity","hba1c","dm_source","abi_left / abi_right","lops","lops_source","pad","pad_source","abi_missing_reason","abi_low / abi_stiff","ulcer_hx","lesion_now","at_risk","refer","refer_reason","refer_main_reason","alt_lops_1site","alt_pad_low_only","psu / strata / weight"],["Participant identifier","Survey cycle start year","Age at interview, years (top-coded at 85)","Sex","Race/ethnicity (NHANES categories)","Glycated haemoglobin, %","How diabetes was identified","Ankle-brachial index per leg","Loss of protective sensation, either foot","How the sensation result was obtained","Abnormal ankle-brachial index (&lt;0.9 or &gt;=1.3) either leg","How the ankle result was obtained","Why the ankle result is unknown (blank if known)","Low (&lt;0.9) or stiff (&gt;=1.3) index on either leg","Ever had leg or foot sore taking &gt;4 weeks to heal","Lesion seen on either foot at exam","Any of the four checks positive","PRIMARY OUTCOME: refer to podiatry","Positive, incomplete or cleared","Most urgent reason for referral (deep phenotype)","Alternative decision: sensation loss from 1 numb site","Alternative decision: only low index (&lt;0.9) counts as abnormal","Survey design variables; weight combined for 1999-2004"],["integer, unique","1999, 2001, 2003","40-85","Male, Female","5 categories","numeric","told by a doctor; HbA1c 6.5% or higher only","numeric","1 yes, 0 no, NA unknown (2+ of 3 sites on one foot)","measured; assigned at risk; assigned normal; unknown","1 yes, 0 no, NA unknown","measured; abnormal: no pulse or pressure unmeasurable; unknown","6 categories","1 yes, 0 no, NA","1 yes, 0 no, NA","1 yes, 0 no, NA","1 yes, 0 all four normal, NA incomplete","1 refer, 0 cleared","3 categories","6 categories","1 yes, 0 no, NA","1 yes, 0 no, NA","numeric"],["DEMO: SEQN","derived","DEMO: RIDAGEYR","DEMO: RIAGENDR","DEMO: RIDRETH1","LAB10 / L10_B / L10_C: LBXGH","DIQ010, LBXGH","LEXABPI / LEXAB_B / LEXAB_C","LEXPN: LEALPN, LEARPN, reason codes","derived","derived","derived from LEXAB: LEALPTPD, LEARPTPD, LEALAPNC, LEARAPNC","derived from LEXAB: LEDSCCT2","derived","DIQ: DIQ090","LEXPN: LEALLES, LEARLES","derived","derived","derived","derived","derived","derived","DEMO; CDC combining rule"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>variable<\/th>\n      <th>description<\/th>\n      <th>values<\/th>\n      <th>source<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["csv","excel"],"pageLength":25,"columnDefs":[{"name":"variable","targets":0},{"name":"description","targets":1},{"name":"values","targets":2},{"name":"source","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="a7.-cohort-characteristics-by-screening-result" class="section level2">
 <h2>A7. Cohort characteristics by screening result</h2>
