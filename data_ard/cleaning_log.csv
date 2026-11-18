@@ -1,6 +1,7 @@
 "step","variable","decision","reason","n_affected"
 "recode","DIQ010","refused (7) / don't know (9) set to missing","not an answer; cannot count as diagnosed or not",13
 "recode","DIQ090","refused (7) / don't know (9) set to missing","not an answer",12
+"note","DIQ010","borderline (3) not counted as a doctor's diagnosis of diabetes","borderline is not a diagnosis; these people are included only if HbA1c is 6.5% or higher",214
 "recode","LEALPN / LEARPN","-1 (not enough information) set to missing","a count of insensate sites cannot be negative; the code means 'not classifiable'",557
 "flag","flag_exam","interview-only participants flagged, not in cohort","never examined, so no foot data; exam weight is zero",118
 "note","RIDAGEYR","age kept as recorded","NHANES top-codes age at 85 in these cycles; true ages above 85 are not known",70

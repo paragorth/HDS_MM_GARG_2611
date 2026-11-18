@@ -12,6 +12,7 @@ output:
 # All code is in this .Rmd and in 01_build_dataset.R, submitted alongside.
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
                       fig.align = "center", fig.width = 8, fig.height = 4)
+options(knitr.kable.NA = "")   # show empty cells, not "NA", in tables
 
 # rmdformats supplies the report theme. It must be installed before knitting starts,
 # so README.md gives a one-line install command; it is listed here as well for completeness.
@@ -36,8 +37,13 @@ invisible(capture.output(source("01_build_dataset.R")))
 options(survey.lonely.psu = "adjust")
 fmt <- function(x) format(x, big.mark = ",")
 pc  <- function(x) paste0(floor(x + 0.5), "%")   # rounds halves up (60.5 -> 61)
-des <- svydesign(ids = ~psu, strata = ~strata, weights = ~weight, nest = TRUE,
-                 data = mutate(ard, cleared = as.numeric(refer == 0)))
+# The design is built on everyone examined and then subset to the cohort, as NHANES
+# guidance requires, so the standard errors reflect the full sampling design.
+exam <- raw %>% filter(flag_exam) %>%
+  left_join(select(ard, SEQN = seqn, refer), by = "SEQN", relationship = "one-to-one") %>%
+  mutate(cleared = as.numeric(refer %in% 0))
+des <- subset(svydesign(ids = ~SDMVPSU, strata = ~SDMVSTRA, weights = ~wt, nest = TRUE, data = exam),
+              in_cohort)
 wpct <- function(x, w = ard$weight) round(100 * weighted.mean(x, w, na.rm = TRUE), 1)
 e <- svymean(~cleared, des)
 cleared <- c(est = 100 * coef(e)[[1]], lo = 100 * confint(e)[1, 1], hi = 100 * confint(e)[1, 2])
@@ -179,7 +185,7 @@ tibble(
            "Lesion seen on either foot at the exam",
            "Any check positive, or any check not completed; cleared only if all four done and normal"),
   `Missing, n (%)` = c(pct_missing(ard$lops), pct_missing(ard$pad), pct_missing(ard$ulcer_hx),
-                       pct_missing(ard$lesion_now), "0 (0%)"),
+                       pct_missing(ard$lesion_now), pct_missing(ard$refer)),
   `Weighted %` = c(wpct(ard$lops), wpct(ard$pad), wpct(ard$ulcer_hx),
                    wpct(ard$lesion_now), wpct(ard$refer))
 ) %>% kable(caption = "Table 1. Phenotype definitions, completeness and prevalence")
@@ -207,7 +213,7 @@ Sensitivity analyses tested the effect of alternative assumptions: excluding inc
 
 # 3. Results
 
-Of the `r fmt(n_total)` participants, `r n_cleared` had complete and reassuring results in all four risk domains. This corresponded to a weighted clearance estimate of `r pc(cleared["est"])` (95% CI `r sprintf("%.0f", cleared["lo"])`–`r pc(cleared["hi"])`). The remaining `r n_pos + n_inc` participants were classified for referral: `r n_pos` because of positive findings and `r n_inc` because their assessments were incomplete (Figure 2).
+Of the `r fmt(n_total)` participants, `r n_cleared` had complete and reassuring results in all four risk domains. This corresponded to a weighted clearance estimate of `r pc(cleared["est"])` (95% CI `r floor(cleared["lo"] + 0.5)`–`r pc(cleared["hi"])`). The remaining `r n_pos + n_inc` participants were classified for referral: `r n_pos` because of positive findings and `r n_inc` because their assessments were incomplete (Figure 2).
 
 Participants meeting clearance criteria were younger than those referred, with mean ages of approximately `r age_clear` and `r age_ref` years respectively (unweighted; Appendix A7).
 
@@ -353,7 +359,7 @@ attrition %>% mutate(removed = lag(n) - n) %>%
 ## A4. Cleaning and derivation log
 
 ```{r s-log}
-datatable(log, caption = "Table A4. Cleaning and derivation log",
+datatable(cleaning_log, caption = "Table A4. Cleaning and derivation log",
           colnames = c("Step", "Variable", "Decision", "Reason", "People affected"),
           extensions = "Buttons", rownames = FALSE,
           options = list(dom = "Bfrtip", buttons = c("csv", "excel"), pageLength = 15))

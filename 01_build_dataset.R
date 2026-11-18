@@ -87,10 +87,10 @@ raw <- pmap_dfr(cycles, load_cycle)
 stopifnot(!anyDuplicated(raw$SEQN))   # SEQN is unique across cycles too
 
 # ---- Cleaning log -----------------------------------------------------------
-log <- tibble(step = character(), variable = character(), decision = character(),
-              reason = character(), n_affected = integer())
+cleaning_log <- tibble(step = character(), variable = character(), decision = character(),
+                       reason = character(), n_affected = integer())
 add_log <- function(step, variable, decision, reason, n) {
-  log <<- add_row(log, step = step, variable = variable, decision = decision,
+  cleaning_log <<- add_row(cleaning_log, step = step, variable = variable, decision = decision,
                   reason = reason, n_affected = as.integer(n))
 }
 
@@ -103,6 +103,9 @@ add_log("recode", "DIQ090", "refused (7) / don't know (9) set to missing",
         "not an answer", n)
 raw <- raw %>% mutate(DIQ010 = if_else(DIQ010 %in% c(7, 9), NA_real_, DIQ010),
                       DIQ090 = if_else(DIQ090 %in% c(7, 9), NA_real_, DIQ090))
+add_log("note", "DIQ010", "borderline (3) not counted as a doctor's diagnosis of diabetes",
+        "borderline is not a diagnosis; these people are included only if HbA1c is 6.5% or higher",
+        sum(raw$DIQ010 %in% 3))
 
 n <- sum(raw$LEALPN %in% -1) + sum(raw$LEARPN %in% -1)
 add_log("recode", "LEALPN / LEARPN", "-1 (not enough information) set to missing",
@@ -316,7 +319,7 @@ dictionary <- tibble::tribble(
   "lops_source", "How the sensation result was obtained", "measured; assigned at risk; assigned normal; unknown", "derived",
   "pad", "Abnormal ankle-brachial index (<0.9 or >=1.3) either leg", "1 yes, 0 no, NA unknown", "derived",
   "pad_source", "How the ankle result was obtained", "measured; abnormal: no pulse or pressure unmeasurable; unknown", "derived from LEXAB: LEALPTPD, LEARPTPD, LEALAPNC, LEARAPNC",
-  "abi_missing_reason", "Why the ankle result is unknown (blank if known)", "6 categories", "derived from LEXAB: LEDSCCT2",
+  "abi_missing_reason", "Why the ankle result is unknown (blank if known)", "7 categories", "derived from LEXAB: LEDSCCT2",
   "abi_low / abi_stiff", "Low (<0.9) or stiff (>=1.3) index on either leg", "1 yes, 0 no, NA", "derived",
   "ulcer_hx", "Ever had leg or foot sore taking >4 weeks to heal", "1 yes, 0 no, NA", "DIQ: DIQ090",
   "lesion_now", "Lesion seen on either foot at exam", "1 yes, 0 no, NA", "LEXPN: LEALLES, LEARLES",
@@ -341,5 +344,5 @@ saveRDS(ard, "data_ard/foot_risk_ard.rds")              # the analysis-ready dat
 write.csv(ard, "data_ard/foot_risk_ard.csv", row.names = FALSE)
 write.csv(dictionary, "data_ard/data_dictionary.csv", row.names = FALSE)
 write.csv(attrition, "data_ard/attrition.csv", row.names = FALSE)
-write.csv(log, "data_ard/cleaning_log.csv", row.names = FALSE)
-cat("\n== Cleaning log ==\n"); print(as.data.frame(log))
+write.csv(cleaning_log, "data_ard/cleaning_log.csv", row.names = FALSE)
+cat("\n== Cleaning log ==\n"); print(as.data.frame(cleaning_log))
