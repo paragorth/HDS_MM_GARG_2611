@@ -75,7 +75,11 @@ scen <- tribble(
 s_drop <- pc(scen$`Weighted % cleared`[2]); s_norm <- pc(scen$`Weighted % cleared`[3])
 ```
 
-> **Coversheet:** insert the completed coversheet here.
+# Coversheet
+
+```{r coversheet, out.width="100%"}
+include_graphics(c("figures/coversheet_p1.png", "figures/coversheet_p2.png", "figures/coversheet_p3.png"))
+```
 
 # Abstract
 

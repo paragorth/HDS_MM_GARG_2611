@@ -5,6 +5,7 @@
 - `HDS_MM_GARG_2611.html` — the knitted report.
 - `01_build_dataset.R` — builds all three data layers from the raw CDC files and runs the integrity checks.
 - `figures/pipeline.png` — Figure 1.
+- `figures/coversheet_p1–3.png` — the completed assignment coversheet, shown at the start of the report.
 - `data_ard/`
   - `layer1_linked.rds` — Layer 1: all 31,126 sampled people, source files joined.
   - `layer2_curated.rds` — Layer 2: 9,145 examined people aged 40+, foot checks derived, diabetes as a flag.
