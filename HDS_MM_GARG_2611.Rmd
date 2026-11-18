@@ -79,7 +79,7 @@ s_drop <- pc(scen$`Weighted % cleared`[2]); s_norm <- pc(scen$`Weighted % cleare
 
 # Abstract
 
-**Background:** Diabetic foot complications contribute substantially to morbidity, mortality and healthcare expenditure. Although routine foot risk assessment is recommended, not every person with diabetes requires specialist podiatry review (NICE NG19; Pallin et al., 2024). Identifying those who can remain in routine care requires reliable risk classification.
+**Background:** Diabetic foot complications contribute substantially to morbidity, mortality and healthcare expenditure. Although routine foot risk assessment is recommended, not every person with diabetes requires specialist podiatry review. Identifying those who can remain in routine care requires reliable risk classification.
 
 **Objective:** To develop an analysis-ready dataset and estimate the proportion of adults with diabetes aged 40 years and over who could avoid specialist podiatry referral using predefined clinical risk criteria.
 
