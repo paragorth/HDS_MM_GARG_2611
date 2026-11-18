@@ -13,7 +13,9 @@ output:
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
                       fig.align = "center", fig.width = 8, fig.height = 4)
 
-pkgs <- c("haven", "dplyr", "purrr", "tibble", "tidyr", "ggplot2", "survey", "knitr", "DT")
+# rmdformats supplies the report theme. It must be installed before knitting starts,
+# so README.md gives a one-line install command; it is listed here as well for completeness.
+pkgs <- c("haven", "dplyr", "purrr", "tibble", "tidyr", "ggplot2", "survey", "knitr", "DT", "rmdformats")
 for (p in pkgs) if (!requireNamespace(p, quietly = TRUE)) install.packages(p)
 suppressPackageStartupMessages({
   library(dplyr); library(tidyr); library(ggplot2); library(survey); library(knitr); library(DT)
@@ -55,7 +57,7 @@ any_missing <- is.na(cohort$lops) | is.na(cohort$pad) | is.na(cohort$lesion_now)
 ulc_missing  <- 100 * mean(cohort$ulcer_hx[any_missing],  na.rm = TRUE)
 ulc_complete <- 100 * mean(cohort$ulcer_hx[!any_missing], na.rm = TRUE)
 
-# Sensitivity analyses (Table 3)
+# Sensitivity analyses (Table 2)
 c0 <- cohort
 clear_if <- function(l, p, u, s) as.numeric(l %in% 0 & p %in% 0 & u %in% 0 & s %in% 0)
 inc <- is.na(c0$at_risk)
@@ -89,7 +91,7 @@ s_drop <- pc(scen$`Weighted % cleared`[2]); s_norm <- pc(scen$`Weighted % cleare
 
 # 1. Introduction
 
-Diabetic foot disease and its progression to ulceration, infection and ultimately amputation has high morbidity and mortality. Armstrong et al. (2017) estimated the lifetime risk of foot ulceration among people with diabetes at 19–34%. More recent data demonstrate a one-year mortality rate of 14.4% following a new diabetic foot ulcer (Holman et al., 2024). Hennessy et al. (2026) reported mortality of 23.6% at one year and 58.2% at five years following below-knee amputation in people with diabetes.
+Diabetic foot disease and its progression to ulceration, infection and ultimately amputation has high morbidity and mortality. Armstrong et al. (2017) estimated the lifetime risk of foot ulceration among people with diabetes at 19–34%. More recent data demonstrate a one-year mortality rate of 14.4% following a new diabetic foot ulcer (Holman et al., 2024). Hennessy et al. (2025) reported mortality of 23.6% at one year and 58.2% at five years following below-knee amputation in people with diabetes.
 
 Prevention is the best strategy and early detection becomes paramount. NICE recommends foot risk assessment at diabetes diagnosis and at least annually thereafter. The assessment includes protective sensation, circulation, previous ulceration and other structural or skin abnormalities. Patients are subsequently classified into risk categories which determine the frequency of follow-up and the need for specialist services (NICE NG19; Bus et al., 2024).
 
@@ -221,10 +223,10 @@ ard %>%
 
 Missing assessment data were clinically important. Participants with at least one missing examination component reported previous ulceration more frequently than those with complete examinations (`r pc(ulc_missing)` versus `r pc(ulc_complete)`).
 
-The sensitivity analyses showed that missing-data assumptions had the greatest influence on the estimated clearance proportion. Dropping incomplete screens increased clearance from `r pc(cleared["est"])` to `r s_drop`, and assuming missing examinations were normal increased it to `r s_norm` (Table 3).
+The sensitivity analyses showed that missing-data assumptions had the greatest influence on the estimated clearance proportion. Dropping incomplete screens increased clearance from `r pc(cleared["est"])` to `r s_drop`, and assuming missing examinations were normal increased it to `r s_norm` (Table 2).
 
 ```{r sensitivity}
-kable(scen, caption = "Table 3. The main result under each alternative decision")
+kable(scen, caption = "Table 2. The main result under each alternative decision")
 ```
 
 Data integrity was assessed at each processing stage. Participant identifiers were checked for uniqueness, ensuring one row per person and one-to-one joins without duplication. The linked file contained `r fmt(n_l1)` rows, matching the demographic file, so no participant was lost or added. Survey weights were checked for positive values, and the data dictionary was cross-checked against the final dataset to confirm that all variables were documented. A reverse-join check found no examination, laboratory or questionnaire records without a corresponding demographic record (Appendix A5).

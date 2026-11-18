@@ -15,8 +15,21 @@
   - `attrition.csv` — people remaining at each step.
 
 ## To reproduce
-1. Open this folder in RStudio (R 4.3 or later).
-2. Knit `HDS_MM_GARG_2611.Rmd`. Missing packages are installed, and the 15 raw NHANES files are downloaded from the CDC into `data_raw/` if not present.
-3. All outputs are rewritten to `data_ard/`. The build stops if any integrity check fails.
+1. Open this folder in RStudio (R 4.3 or later; last built with R 4.5.3).
+2. Install the report theme once, since it is needed before knitting starts:
+   `install.packages("rmdformats")`
+3. Knit `HDS_MM_GARG_2611.Rmd`. Any other missing packages (haven, dplyr, purrr, tibble, tidyr, ggplot2, survey, knitr, DT) are installed, and the 15 raw NHANES files are downloaded from the CDC into `data_raw/` if not present.
+4. All outputs are rewritten to `data_ard/`. The build stops if any integrity check fails.
 
-Raw CDC files are not included; they are public and downloaded by the script.
+To rebuild the datasets without the report, run `Rscript 01_build_dataset.R` from this folder.
+
+Raw CDC files are not included; they are public and downloaded by the script. Exact package versions used are listed in the report's appendix (A9, R session information).
+
+## Data source
+Centers for Disease Control and Prevention, National Center for Health Statistics. National Health and Nutrition Examination Survey (NHANES) 1999–2004 public-use data. https://wwwn.cdc.gov/nchs/nhanes/
+
+## Licence
+- Code (`.R`, `.Rmd`): MIT, see `LICENSE`.
+- Derived datasets and metadata (`data_ard/`) and the report: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). The underlying NHANES data are US federal public-use data.
+
+This is a research classification, not a validated clinical decision tool.
